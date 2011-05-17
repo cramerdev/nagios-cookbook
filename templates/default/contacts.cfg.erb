@@ -26,7 +26,7 @@ define contactgroup {
 define contact {
   use          default-contact
   contact_name <%= a['id'] %>
-  email        <%= a['nagios']['email'] %>
+<% if (a[:nagios] || {})[:email] %> email        <%= (a[:nagios] || {})[:email] %><%end %>
 }
 
 <% end -%>

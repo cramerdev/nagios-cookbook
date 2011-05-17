@@ -25,7 +25,7 @@ include_recipe "apache2::mod_ssl"
 include_recipe "apache2::mod_rewrite"
 include_recipe "nagios::client"
 
-sysadmins = search(:users, 'groups:sysadmin')
+sysadmins = search(:users, 'groups:admin')
 nodes = search(:node, "hostname:[* TO *] AND app_environment:#{node[:app_environment]}")
 
 if nodes.empty?
@@ -109,20 +109,24 @@ else
   end
 end
 
-apache_site "000-default" do
-  enable false
-end
+if node[:nagios][:web][:enabled]
+  apache_site "000-default" do
+    enable false
+  end
 
-template "#{node[:apache][:dir]}/sites-available/nagios3.conf" do
-  source "apache2.conf.erb"
-  mode 0644
-  variables :public_domain => public_domain
-  if ::File.symlink?("#{node[:apache][:dir]}/sites-enabled/nagios3.conf")
-    notifies :reload, resources(:service => "apache2")
+  template "#{node[:apache][:dir]}/sites-available/nagios3.conf" do
+    source "apache2.conf.erb"
+    mode 0644
+    variables :public_domain => public_domain
+    if ::File.symlink?("#{node[:apache][:dir]}/sites-enabled/nagios3.conf")
+      notifies :reload, resources(:service => "apache2")
+    end
   end
 end
 
-apache_site "nagios3.conf"
+apache_site 'nagios3.conf' do
+  enable node[:nagios][:web][:enabled]
+end
 
 %w{ nagios cgi }.each do |conf|
   nagios_conf conf do

@@ -12,7 +12,7 @@ define service {
 # monitoring service checks
 define service {
     service_description Nagios
-    hostgroup_name      monitoring
+    hostgroup_name      <%= node[:nagios][:server_role] || 'monitoring' %>
     check_command       check-nagios
     contact_groups      admins
     use                 default-service
