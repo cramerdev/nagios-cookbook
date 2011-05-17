@@ -54,7 +54,7 @@ else
   public_domain = node[:domain]
 end
 
-%w{ nagios3 nagios-nrpe-plugin nagios-images }.each do |pkg|
+%w{ nagios3 nagios-nrpe-plugin nagios-images nagios3-doc }.each do |pkg|
   package pkg
 end
 
