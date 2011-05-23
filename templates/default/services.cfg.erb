@@ -49,12 +49,12 @@ define service {
     use                 default-service
 }
 
-define service {
-    service_description Free Memory
-    hostgroup_name      all
-    check_command    		check_mem
-    use                 default-service
-}
+#define service {
+    #service_description Free Memory
+    #hostgroup_name      all
+    #check_command    		check_mem
+    #use                 default-service
+#}
 
 define service {
     service_description SSH

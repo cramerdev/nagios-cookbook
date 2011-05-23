@@ -4,8 +4,8 @@
 <% @nodes.each do |n| -%>
 define host {
   use server
-  address <%= n['ipaddress'] %>
-  host_name <%= n['hostname'] %>
+  address <%= (n[:cloud] || {})[:local_ipv4] || n[:ipaddress] %>
+  host_name <%= n[:fqdn] %>
 <% if n.run_list.roles.nil? -%>
   hostgroups all
 <% else -%>

@@ -57,6 +57,7 @@ template "/etc/nagios/nrpe.cfg" do
   owner "nagios"
   group "nagios"
   mode "0644"
-  variables :mon_host => mon_host
+  variables :mon_host => mon_host,
+            :ip       => (node[:cloud] || {})[:local_ipv4] || node[:ipaddress]
   notifies :restart, resources(:service => "nagios-nrpe-server")
 end
