@@ -70,6 +70,13 @@ define service {
     use                 default-service
 }
 
+define service {
+    service_description Supervisor
+    hostgroup_name      all
+    check_command       check_supervisorctl
+    use                 default-service
+}
+
 <% unless @service_hosts['monitoring'].nil? -%>
 # If the monitoring host is a postfix relay, uncomment this.
 #define service {

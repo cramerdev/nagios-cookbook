@@ -333,3 +333,8 @@ define command {
 #        command_name process-host-perfdata
 #        command_line /usr/lib/nagios/plugins/process_perfdata.pl -d HOSTPERFDATA
 #}
+
+define command {
+  command_name    check_supervisorctl
+  command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_supervisorctl -t 20
+}

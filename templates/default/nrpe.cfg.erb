@@ -28,3 +28,8 @@ command[check_mysql_server]=/usr/lib/nagios/plugins/check_mysql -H localhost -u 
 #command[check_memcached_response]=/usr/local/bin/check_memcached -H <%= @ip %> -w 3 -c 5
 #command[check_memcached_size]=/usr/local/bin/check_memcached -H <%= @ip %> --size-warning 60 --size-critical 80
 #command[check_memcached_hit]=/usr/local/bin/check_memcached -H <%= @ip %> --hit-warning 40 --hit-critical 20
+<% if node.recipe?('supervisor') %>
+command[check_supervisorctl]=/usr/lib/nagios/plugins/check_supervisorctl.sh
+<% else %>
+command[check_supervisorctl]=/usr/lib/nagios/plugins/check_dummy 0 "Supervisor not installed"
+<% end %>
