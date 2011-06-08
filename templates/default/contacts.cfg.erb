@@ -27,6 +27,7 @@ define contact {
   use          default-contact
   contact_name <%= a['id'] %>
 <% if (a[:nagios] || {})[:email] %> email        <%= (a[:nagios] || {})[:email] %><%end %>
+<% if (a[:nagios] || {})[:pager] %> pager        <%= (a[:nagios] || {})[:pager] %><%end %>
 }
 
 <% end -%>

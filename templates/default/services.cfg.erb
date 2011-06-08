@@ -57,6 +57,13 @@ define service {
 #}
 
 define service {
+    service_description Free Swap
+    hostgroup_name      all
+    check_command       check_swap
+    use                 default-service
+}
+
+define service {
     service_description SSH
     hostgroup_name      all
     check_command       check_ssh
