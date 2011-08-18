@@ -140,3 +140,12 @@ define service {
 }
 
 <% end -%>
+
+# Syslog NG
+define service {
+    service_description syslog-ng
+    hostgroup_name      all
+    check_command       check_nrpe!check_syslog-ng
+    use                 default-service
+}
+ 

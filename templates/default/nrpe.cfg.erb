@@ -33,3 +33,7 @@ command[check_supervisorctl]=/usr/lib/nagios/plugins/check_supervisorctl.sh
 <% else %>
 command[check_supervisorctl]=/usr/lib/nagios/plugins/check_dummy 0 "Supervisor not installed"
 <% end %>
+<% if node.recipe?('syslog-ng') %>
+command[check_syslog-ng]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1:1 -C syslog-ng
+<% end %>
+
