@@ -28,12 +28,27 @@ command[check_mysql_server]=<%= node['nagios']['plugin_dir'] %>/check_mysql -H l
 #command[check_memcached_response]=/usr/local/bin/check_memcached -H <%= @ip %> -w 3 -c 5
 #command[check_memcached_size]=/usr/local/bin/check_memcached -H <%= @ip %> --size-warning 60 --size-critical 80
 #command[check_memcached_hit]=/usr/local/bin/check_memcached -H <%= @ip %> --hit-warning 40 --hit-critical 20
+
 <% if node.recipe?('supervisor') %>
-command[check_supervisorctl]=/usr/lib/nagios/plugins/check_supervisorctl.sh
+command[check_supervisorctl]=<%= node['nagios']['plugin_dir'] %>/check_supervisorctl.sh
 <% else %>
-command[check_supervisorctl]=/usr/lib/nagios/plugins/check_dummy 0 "Supervisor not installed"
-<% end %>
-<% if node.recipe?('syslog-ng') %>
-command[check_syslog-ng]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1:1 -C syslog-ng
+command[check_supervisorctl]=<%= node['nagios']['plugin_dir'] %>/check_dummy 0 "supervisor not installed"
 <% end %>
 
+<% if node.recipe?('syslog-ng') %>
+command[check_syslog-ng]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1:1 -C syslog-ng
+<% else %>
+command[check_syslog-ng]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "syslog-ng not installed"
+<% end %>
+
+<% if node.recipe?('ganglia') %>
+command[check_gmond]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1:1 -C gmond
+<% else %>
+command[check_gmond]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "gmond not installed"
+<% end %>
+
+<% if node.recipe?('ganglia::web2') %>
+command[check_gmetad]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1:1 -C gmetad
+<% else %>
+command[check_gmetad]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "gmetad not installed"
+<% end %>

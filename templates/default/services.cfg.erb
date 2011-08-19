@@ -148,4 +148,20 @@ define service {
     check_command       check_nrpe!check_syslog-ng
     use                 default-service
 }
- 
+
+# Ganglia gmond
+define service {
+    service_description Ganglia monitoring
+    hostgroup_name      all
+    check_command       check_nrpe!check_gmond
+    use                 default-service
+}
+
+# Ganglia gmetad
+define service {
+    service_description Ganglia Meta Daemon
+    # nagios & gmetad shared here
+    hostgroup_name      <%= node[:nagios][:server_role] || 'monitoring' %>
+    check_command       check_nrpe!check_gmetad
+    use                 default-service
+}
