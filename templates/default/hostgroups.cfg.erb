@@ -3,14 +3,14 @@
 
 define hostgroup {
   hostgroup_name all
-  alias all
+  alias All
   members *
 }
 
 <% @roles.each do |r| -%>
 define hostgroup {
-  hostgroup_name <%= r %>
-  alias <%= r %>
+  hostgroup_name <%= r.name %>
+  alias <%= r.description %>
 }
 
 <% end -%>

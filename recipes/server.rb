@@ -43,9 +43,9 @@ end
 
 role_list = Array.new
 service_hosts= Hash.new
-search(:role, "*:*") do |r|
-  role_list << r.name
-  search(:node, "role:#{r.name} AND chef_environment:#{node.chef_environment}") do |n|
+search(:role, node['nagios']['role_search'] || '*:*') do |r|
+  role_list << r
+  search(:node, "roles:#{r.name} AND chef_environment:#{node.chef_environment}") do |n|
     service_hosts[r.name] = n['hostname']
   end
 end
@@ -61,7 +61,7 @@ include_recipe "nagios::server_#{node['nagios']['server']['install_method']}"
 service "nagios" do
   service_name node['nagios']['server']['service_name']
   supports :status => true, :restart => true, :reload => true
-  action [ :enable, :start ]
+  action :enable
 end
 
 nagios_conf "nagios" do
@@ -69,6 +69,12 @@ nagios_conf "nagios" do
 end
 
 directory "#{node['nagios']['conf_dir']}/dist" do
+  owner node['nagios']['user']
+  group node['nagios']['group']
+  mode "0755"
+end
+
+directory "#{node['nagios']['conf_dir']}/conf.d" do
   owner node['nagios']['user']
   group node['nagios']['group']
   mode "0755"
@@ -154,3 +160,8 @@ end
 nagios_conf "hosts" do
   variables :nodes => nodes
 end
+
+service 'nagios' do
+  action :start
+end
+
