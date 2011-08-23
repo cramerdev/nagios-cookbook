@@ -74,3 +74,6 @@ default['nagios']['default_service']['notification_interval'] = 1200
 
 # Web UI settings
 default[:nagios][:web][:enabled] = true
+
+# Object definition helpers
+default['nagios']['hostgroups'] = {}

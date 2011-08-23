@@ -102,16 +102,15 @@ define service {
 #}
 
 <% end -%>
-<% unless @service_hosts['webserver'].nil? -%>
+
 # basic web server http check
 define service {
     service_description HTTP Processes
-    hostgroup_name      webserver
+    hostgroup_name      <%= (node['nagios']['hostgroups']['web'] || ['web']).join(',') %>
     check_command       check_http
     use                 default-service
 }
 
-<% end -%>
 <% unless @service_hosts['appserver'].nil? -%>
 # basic check if appserver role is running unicorn
 define service {
