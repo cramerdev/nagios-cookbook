@@ -166,9 +166,9 @@ service 'nagios' do
 end
 
 # Add nagios to the supervisor group if supervisor is installed
-if node.recipe?('supervisor')
-  group node['supervisor']['group'] do
-    members [node['nagios']['user']]
-    append true
-  end
-end
+#if node.recipe?('supervisor')
+  #group node['supervisor']['group'] do
+    #members [node['nagios']['user']]
+    #append true
+  #end
+#end
