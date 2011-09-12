@@ -29,6 +29,9 @@
 # functions
 # --------------------------------------------------------------------
 
+STATE_CRITICAL=2
+STATE_OK=0
+
 function print_help() {
 	echo ""
 	echo "Checks supervisorctl to see if all programs are running."
