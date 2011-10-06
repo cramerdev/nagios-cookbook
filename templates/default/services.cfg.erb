@@ -78,6 +78,13 @@ define service {
 }
 
 define service {
+    service_description Open File Descriptors
+    hostgroup_name      all
+    check_command       check_open_fds
+    use                 default-service
+}
+
+define service {
     service_description Supervisor
     hostgroup_name      all
     check_command       check_supervisorctl

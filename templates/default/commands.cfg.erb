@@ -335,6 +335,11 @@ define command {
 #}
 
 define command {
+  command_name    check_open_fds
+  command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_open_fds -t 20
+}
+
+define command {
   command_name    check_supervisorctl
   command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_supervisorctl -t 20
 }
