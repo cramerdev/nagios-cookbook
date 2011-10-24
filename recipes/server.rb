@@ -28,7 +28,7 @@ include_recipe "nagios::client"
 
 sysadmins = search(:users, 'groups:admin')
 node_search = node[:nagios][:node_search] || 'hostname:[* TO *]'
-nodes = search(:node, "#{node_search} AND app_environment:#{node[:app_environment]}")
+nodes = search(:node, node_search)
 
 if nodes.empty?
   Chef::Log.info("No nodes returned from search, using this node so hosts.cfg has data")
