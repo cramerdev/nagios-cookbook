@@ -77,3 +77,4 @@ default[:nagios][:web][:enabled] = true
 
 # Object definition helpers
 default['nagios']['hostgroups'] = {}
+default['nagios']['nrpe_hostgroup'] = 'all'

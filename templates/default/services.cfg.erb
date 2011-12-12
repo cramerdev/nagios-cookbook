@@ -21,7 +21,7 @@ define service {
 # Uncomment if you're using Munin
 #define service {
 #    service_description Munin Client
-#    hostgroup_name      all
+#    hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
 #    check_command       check_tcp!4949
 #    use                 default-service
 #}
@@ -37,56 +37,58 @@ define service {
 
 define service {
     service_description Free Space All Disks
-    hostgroup_name      all
+    hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
     check_command       check_all_disks
     use                 default-service
 }
 
 define service {
     service_description Load Average
-    hostgroup_name      all
+    hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
     check_command       check_load
     use                 default-service
 }
 
 #define service {
     #service_description Free Memory
-    #hostgroup_name      all
+    #hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
     #check_command    		check_mem
     #use                 default-service
 #}
 
 define service {
     service_description Free Swap
-    hostgroup_name      all
+    hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
     check_command       check_swap
     use                 default-service
 }
 
+<% unless @service_hosts['ssh_server'].nil? -%>
 define service {
     service_description SSH
-    hostgroup_name      all
+    hostgroup_name      ssh_server
     check_command       check_ssh
     use                 default-service
 }
+<% end -%>
 
 define service {
     service_description Processes
-    hostgroup_name      all
+    hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
     check_command       check_local_procs
     use                 default-service
 }
 
 define service {
     service_description Open File Descriptors
-    hostgroup_name      all
+    hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
     check_command       check_open_fds
     use                 default-service
 }
 
 define service {
     service_description Supervisor
-    hostgroup_name      all
+    hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
     check_command       check_supervisorctl
     use                 default-service
 }
@@ -111,12 +113,14 @@ define service {
 <% end -%>
 
 # basic web server http check
+<% unless @service_hosts['web'].nil? -%>
 define service {
     service_description HTTP Processes
     hostgroup_name      <%= (node['nagios']['hostgroups']['web'] || ['web']).join(',') %>
     check_command       check_http
     use                 default-service
 }
+<% end -%>
 
 <% unless @service_hosts['appserver'].nil? -%>
 # basic check if appserver role is running unicorn
@@ -150,7 +154,7 @@ define service {
 # Syslog NG
 define service {
     service_description syslog-ng
-    hostgroup_name      all
+    hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
     check_command       check_nrpe!check_syslog-ng
     use                 default-service
 }
@@ -158,7 +162,7 @@ define service {
 # Ganglia gmond
 define service {
     service_description Ganglia monitoring
-    hostgroup_name      all
+    hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
     check_command       check_nrpe!check_gmond
     use                 default-service
 }
