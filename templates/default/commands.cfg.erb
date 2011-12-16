@@ -183,6 +183,11 @@ define command {
 }
 
 define command {
+  command_name    check_imap
+  command_line    $USER1$/check_pop -H $HOSTADDRESS$
+}
+
+define command {
   command_name    check_smtp
   command_line    $USER1$/check_smtp -H $HOSTADDRESS$
 }
