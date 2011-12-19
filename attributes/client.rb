@@ -51,3 +51,4 @@ default['nagios']['checks']['load']['warning']    = "15,10,5"
 default['nagios']['checks']['smtp_host'] = String.new
 
 default['nagios']['server_role'] = "monitoring"
+

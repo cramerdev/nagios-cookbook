@@ -22,3 +22,16 @@ default['nagios']['user'] = "nagios"
 default['nagios']['group'] = "nagios"
 
 set['nagios']['plugin_dir'] = "/usr/lib/nagios/plugins"
+
+# Set client IP
+#
+# Use the public ip for Rackspace Cloud Servers
+if node['cloud'] && node['cloud']['provider'] == 'rackspace'
+  default['nagios']['client']['ipaddress'] = node['cloud']['public_ipv4']
+# Use the private ip for other "cloud"-like providers
+elsif node['cloud'] && node['cloud']['local_ipv4']
+  default['nagios']['client']['ipaddress'] = node['cloud']['local_ipv4']
+# Or the regular ip
+else
+  default['nagios']['client']['ipaddress'] = node['ipaddress']
+end

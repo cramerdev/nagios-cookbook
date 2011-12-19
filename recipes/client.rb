@@ -24,11 +24,13 @@
 
 mon_host = ['127.0.0.1']
 
+
+# Get all the mon host ips
 if node.run_list.roles.include?(node['nagios']['server_role'])
-  mon_host << node['ipaddress']
+  mon_host = node['network']['interfaces'].map {|iface| iface[1]['addresses'].keys }.flatten.uniq
 else
   search(:node, "role:#{node['nagios']['server_role']}") do |n|
-    mon_host << n['ipaddress']
+    mon_host = n['network']['interfaces'].map {|iface| iface[1]['addresses'].keys }.flatten.uniq
   end
 end
 
@@ -53,6 +55,6 @@ template "#{node['nagios']['nrpe']['conf_dir']}/nrpe.cfg" do
   group "root"
   mode "0644"
   variables :mon_host => mon_host,
-            :ip       => (node[:cloud] || {})[:local_ipv4] || node[:ipaddress]
+            :ip       => node['nagios']['client']['ipaddress']
   notifies :restart, "service[nagios-nrpe-server]"
 end
