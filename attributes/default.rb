@@ -23,6 +23,9 @@ default['nagios']['group'] = "nagios"
 
 set['nagios']['plugin_dir'] = "/usr/lib/nagios/plugins"
 
+# Set server ips
+default['nagios']['server']['ipaddresses'] = []
+
 # Set client IP
 #
 # Use the public ip for Rackspace Cloud Servers
