@@ -151,6 +151,16 @@ define service {
 
 <% end -%>
 
+# Chef Server
+<% unless @service_hosts['chef_server'].nil? -%>
+define service {
+    service_description CouchDB
+    hostgroup_name      chef_server
+    check_command       check_nrpe!check_couchdb
+    use                 default-service
+}
+<% end -%>
+
 # Syslog NG
 define service {
     service_description syslog-ng

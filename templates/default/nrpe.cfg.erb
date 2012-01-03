@@ -32,22 +32,21 @@ command[check_mysql_server]=<%= node['nagios']['plugin_dir'] %>/check_mysql -H l
 # Open file desciptors
 command[check_open_fds]=<%= node['nagios']['plugin_dir'] %>/check_open_fds.sh
 
-# Supervisor
 <% if node.recipe?('supervisor') %>
 command[check_supervisorctl]=<%= node['nagios']['plugin_dir'] %>/check_supervisorctl.sh
 <% else %>
 command[check_supervisorctl]=<%= node['nagios']['plugin_dir'] %>/check_dummy 0 "supervisor not installed"
 <% end %>
 
-# Syslog NG
 <% if node.recipe?('syslog-ng') %>
+# Syslog NG
 command[check_syslog-ng]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1:1 -C syslog-ng
 <% else %>
 command[check_syslog-ng]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "syslog-ng not installed"
 <% end %>
 
-# Ganglia
 <% if node.recipe?('ganglia') %>
+# Ganglia
 command[check_gmond]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1:1 -C gmond
 <% else %>
 command[check_gmond]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "gmond not installed"
@@ -57,4 +56,9 @@ command[check_gmond]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "gmond not
 command[check_gmetad]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1:1 -C gmetad
 <% else %>
 command[check_gmetad]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "gmetad not installed"
+<% end %>
+
+<% if node.recipes.include?("chef-server::rubygems-install") || node.recipes.include?("couchdb") %>
+# Couch DB
+command[check_couchdb]=<%= node['nagios']['plugin_dir'] %>/check_http -H localhost -p 5984 -s '"couchdb":"Welcome"'
 <% end %>
