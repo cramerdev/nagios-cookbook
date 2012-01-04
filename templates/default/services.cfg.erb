@@ -139,12 +139,11 @@ define service {
 }
 
 <% end -%>
-<% unless @service_hosts['database_master'].nil? -%>
-# basic check if the database_master role is a mysql server
-# database_master service checks
+
+<% unless @service_hosts['mysql_server'].nil? -%>
 define service {
-    service_description MySQL
-    hostgroup_name      database_master
+    service_description MySQL Server
+    hostgroup_name      mysql_server
     check_command       check_nrpe!check_mysql_server
     use                 default-service
 }
