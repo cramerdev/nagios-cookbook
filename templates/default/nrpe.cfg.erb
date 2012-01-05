@@ -45,6 +45,15 @@ command[check_syslog-ng]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1:1 
 command[check_syslog-ng]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "syslog-ng not installed"
 <% end %>
 
+<% if node.role?('delayed_job_server') %>
+# Delayed Job
+#
+# We're checking for 2 here because check_procs is grepping, which is one process,
+# and the actual thing, which shows up on grep as delayed_job, is actually a ruby
+# process with delayed_job as the argument.
+command[check_delayed_job]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 2: -a delayed_job
+<% end %>
+
 <% if node.recipe?('ganglia') %>
 # Ganglia
 command[check_gmond]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1:1 -C gmond

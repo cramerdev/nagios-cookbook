@@ -168,6 +168,16 @@ define service {
     use                 default-service
 }
 
+<% unless @service_hosts['delayed_job_server'].nil? -%>
+# Delayed Job
+define service {
+    service_description Delayed Job
+    hostgroup_name      delayed_job_server
+    check_command       check_nrpe!check_delayed_job
+    use                 default-service
+}
+<% end -%>
+
 # Ganglia gmond
 define service {
     service_description Ganglia monitoring
