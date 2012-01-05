@@ -22,6 +22,7 @@ def nagios_boolean(true_or_false)
 end
 
 def nagios_interval(seconds)
+  return 0 if seconds.to_i.zero?
   if seconds.to_i < node['nagios']['interval_length'].to_i
     raise ArgumentError, "Specified nagios interval of #{seconds} seconds must be equal to or greater than the default interval length of #{node['nagios']['interval_length']}"
   end
