@@ -70,4 +70,8 @@ command[check_gmetad]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "gmetad n
 <% if node.recipes.include?("chef-server::rubygems-install") || node.recipes.include?("couchdb") %>
 # Couch DB
 command[check_couchdb]=<%= node['nagios']['plugin_dir'] %>/check_http -H localhost -p 5984 -s '"couchdb":"Welcome"'
+# Solr
+command[check_solr]=<%= node['nagios']['plugin_dir'] %>/check_http -H localhost -p 8983 -u /solr/ -s "Solr Admin"
+# RabbitMQ
+command[check_rabbitmq]=<%= node['nagios']['plugin_dir'] %>/check_tcp -H localhost -p 5672
 <% end %>

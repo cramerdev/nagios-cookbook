@@ -158,6 +158,20 @@ define service {
     check_command       check_nrpe!check_couchdb
     use                 default-service
 }
+
+define service {
+    service_description Solr
+    hostgroup_name      chef_server
+    check_command       check_nrpe!check_solr
+    use                 default-service
+}
+
+define service {
+    service_description RabbitMQ
+    hostgroup_name      chef_server
+    check_command       check_nrpe!check_rabbitmq
+    use                 default-service
+}
 <% end -%>
 
 # Syslog NG
