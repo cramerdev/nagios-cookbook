@@ -322,26 +322,26 @@ define command {
 	command_line	/usr/local/nagios/libexec/check_dummy 2 "CRITICAL: Results of memory checks not coming in!"
 }
 
-# Notification
+# Host Notification
 define command {
   command_name  host-notify-by-email
-  command_line  /usr/bin/printf "%b" "$LONGDATETIME$\n\n$HOSTALIAS$ $NOTIFICATIONTYPE$ $HOSTSTATE$\n\n$HOSTOUTPUT$\n\nLogin: ssh://$HOSTNAME$" | mail -s "$NOTIFICATIONTYPE$ - $HOSTALIAS$ $HOSTSTATE$!" $CONTACTEMAIL$
+  command_line  /usr/bin/printf "%b" "***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nDate/Time: $LONGDATETIME$\nURL: https://<%= node['nagios']['web']['domain_name'] || node['fqdn'] %>/cgi-bin/nagios3/extinfo.cgi?type=1&host=$HOSTNAME$\n\n$HOSTACKCOMMENT$" | mail -s "** $NOTIFICATIONTYPE$ Host Alert: $HOSTALIAS$ is $HOSTSTATE$ **" $CONTACTEMAIL$
 }
 
 define command {
   command_name  host-notify-by-sms-email
-  command_line  /usr/bin/printf "%b" "$HOSTALIAS$ $NOTIFICATIONTYPE$ $HOSTSTATE$\n\n$HOSTOUTPUT$" | mail -s "$HOSTALIAS$ $HOSTSTATE$!" $CONTACTPAGER$
+  command_line  /usr/bin/printf "%b" "***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nDate/Time: $LONGDATETIME$\nURL: https://<%= node['nagios']['web']['domain_name'] || node['fqdn'] %>/cgi-bin/nagios3/extinfo.cgi?type=1&host=$HOSTNAME$\n\n$HOSTACKCOMMENT$" | mail -s "** $NOTIFICATIONTYPE$ Host Alert: $HOSTALIAS$ is $HOSTSTATE$ **" $CONTACTPAGER$
 }
 
-# 'notify-by-email' command definition
+# Service Notification
 define command {
   command_name  service-notify-by-email
-  command_line  /usr/bin/printf "%b" "$LONGDATETIME$ - $SERVICEDESC$ $SERVICESTATE$\n\n$HOSTALIAS$  $NOTIFICATIONTYPE$\n\n$SERVICEOUTPUT$\n\nLogin: ssh://$HOSTNAME$" | mail -s "** $NOTIFICATIONTYPE$ - $HOSTALIAS$ - $SERVICEDESC$ - $SERVICESTATE$" $CONTACTEMAIL$
+  command_line    /usr/bin/printf "%b" "***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\nDate/Time: $LONGDATETIME$\nAdditional Info: $SERVICEOUTPUT$\nURL: https://<%= node['nagios']['web']['domain_name'] || node['fqdn'] %>/cgi-bin/nagios3/extinfo.cgi?type=2&host=$HOSTNAME$&service=$SERVICEDESC$\n\n$SERVICEACKCOMMENT$"" | mail -s "** $NOTIFICATIONTYPE$ Service Alert: $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTEMAIL$
 }
 
 define command {
   command_name  service-notify-by-sms-email
-  command_line  /usr/bin/printf "%b" "$LONGDATETIME$ - $SERVICEDESC$ $SERVICESTATE$\n\n$HOSTALIAS$  $NOTIFICATIONTYPE$\n\n$SERVICEOUTPUT$\n\nLogin: ssh://$HOSTNAME$" | mail -s "** $NOTIFICATIONTYPE$ - $HOSTALIAS$ - $SERVICEDESC$ - $SERVICESTATE$" $CONTACTPAGER$
+  command_line    /usr/bin/printf "%b" "***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\nDate/Time: $LONGDATETIME$\nAdditional Info: $SERVICEOUTPUT$\nURL: https://<%= node['nagios']['web']['domain_name'] || node['fqdn'] %>/cgi-bin/nagios3/extinfo.cgi?type=2&host=$HOSTNAME$&service=$SERVICEDESC$\n\n$SERVICEACKCOMMENT$"" | mail -s "** $NOTIFICATIONTYPE$ Service Alert: $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTPAGER$
 }
 
 #define command {
