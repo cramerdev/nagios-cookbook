@@ -7,10 +7,9 @@ define hostgroup {
   members *
 }
 
-<% @roles.each do |r| -%>
+<% (@roles + @environments).each do |r| -%>
 define hostgroup {
   hostgroup_name <%= r.name %>
   alias <%= r.description %>
 }
-
 <% end -%>

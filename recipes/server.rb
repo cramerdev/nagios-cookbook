@@ -50,6 +50,12 @@ search(:role, node['nagios']['role_search'] || '*:*') do |r|
   end
 end
 
+environment_list = search(:environment, '*:*').each do |env|
+  search(:node, "chef_environment:#{env.name}") do |n|
+    service_hosts[env.name] = n['hostname']
+  end
+end
+
 if node['public_domain']
   public_domain = node['public_domain']
 else
@@ -154,7 +160,7 @@ nagios_conf "contacts" do
 end
 
 nagios_conf "hostgroups" do
-  variables :roles => role_list
+  variables :roles => role_list, :environments => environment_list
 end
 
 nagios_conf "hosts" do

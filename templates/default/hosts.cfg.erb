@@ -9,8 +9,7 @@ define host {
 <% if (n.roles || []).empty? -%>
   hostgroups all
 <% else -%>
-  hostgroups <%= n.roles.to_a.join(",") %>
+  hostgroups <%= (n.roles.to_a << n.chef_environment).join(",") %>
 <% end -%>
 }
-
 <% end -%>
