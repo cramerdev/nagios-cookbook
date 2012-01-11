@@ -45,6 +45,10 @@ command[check_syslog-ng]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1:1 
 command[check_syslog-ng]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "syslog-ng not installed"
 <% end %>
 
+<% if node.role?('nfs_server') %>
+command[check_nfs]=<%= node['nagios']['plugin_dir'] %>/check_nfs_health.sh
+<% end %>
+
 <% if node.role?('delayed_job_server') %>
 # Delayed Job
 #

@@ -182,6 +182,16 @@ define service {
     use                 default-service
 }
 
+<% unless @service_hosts['nfs_server'].nil? -%>
+# NFS
+define service {
+    service_description NFS
+    hostgroup_name      nfs_server
+    check_command       check_nrpe!check_nfs
+    use                 default-service
+}
+<% end -%>
+
 <% unless @service_hosts['delayed_job_server'].nil? -%>
 # Delayed Job
 define service {
