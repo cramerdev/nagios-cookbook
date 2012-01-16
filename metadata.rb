@@ -9,7 +9,7 @@ recipe "nagios", "Includes the client recipe."
 recipe "nagios::client", "Installs and configures a nagios client with nrpe"
 recipe "nagios::server", "Installs and configures a nagios server"
 
-%w{ apache2 build-essential php }.each do |cb|
+%w{ apache2 build-essential }.each do |cb|
   depends cb
 end
 
