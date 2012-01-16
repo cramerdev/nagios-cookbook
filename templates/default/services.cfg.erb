@@ -18,14 +18,6 @@ define service {
     use                 default-service
 }
 
-# Uncomment if you're using Munin
-#define service {
-#    service_description Munin Client
-#    hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
-#    check_command       check_tcp!4949
-#    use                 default-service
-#}
-
 # default checks for all hosts
 # Uncomment if you're running chef-client as a daemon
 #define service {
@@ -86,32 +78,6 @@ define service {
     use                 default-service
 }
 
-define service {
-    service_description Supervisor
-    hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
-    check_command       check_supervisorctl
-    use                 default-service
-}
-
-<% unless @service_hosts['monitoring'].nil? -%>
-# If the monitoring host is a postfix relay, uncomment this.
-#define service {
-#    service_description Postfix
-#    hostgroup_name      monitoring
-#    check_command       check_nrpe!check_smtp
-#    use                 default-service
-#}
-
-# If the monitoring host is a syslog server, uncomment this.
-#define service {
-#    service_description Rsyslog
-#    hostgroup_name      monitoring
-#    check_command       check_tcp!514
-#    use                 default-service
-#}
-
-<% end -%>
-
 # basic web server http check
 <% unless @service_hosts['web'].nil? -%>
 define service {
@@ -120,24 +86,6 @@ define service {
     check_command       check_http
     use                 default-service
 }
-<% end -%>
-
-<% unless @service_hosts['appserver'].nil? -%>
-# basic check if appserver role is running unicorn
-define service {
-    service_description Unicorn Processes
-    hostgroup_name      appserver
-    check_command       check_nrpe!check_unicorn
-    use                 default-service
-}
-
-define service {
-    service_description Unicorn HTTP
-    hostgroup_name      appserver
-    check_command       check_http_port_expect!8080!"HTTP/1.1 302 Found"
-    use                 default-service
-}
-
 <% end -%>
 
 <% unless @service_hosts['mysql_server'].nil? -%>
@@ -174,14 +122,6 @@ define service {
 }
 <% end -%>
 
-# Syslog NG
-define service {
-    service_description syslog-ng
-    hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
-    check_command       check_nrpe!check_syslog-ng
-    use                 default-service
-}
-
 <% unless @service_hosts['nfs_server'].nil? -%>
 # NFS
 define service {
@@ -216,5 +156,29 @@ define service {
     # nagios & gmetad shared here
     hostgroup_name      <%= node[:nagios][:server_role] || 'monitoring' %>
     check_command       check_nrpe!check_gmetad
+    use                 default-service
+}
+
+# New Relic
+define service {
+    service_description New Relic server monitoring
+    hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
+    check_command       check_nrpe!check_newrelic
+    use                 default-service
+}
+
+# Supervisor
+define service {
+    service_description Supervisor
+    hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
+    check_command       check_supervisorctl
+    use                 default-service
+}
+
+# Syslog NG
+define service {
+    service_description syslog-ng
+    hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
+    check_command       check_nrpe!check_syslog-ng
     use                 default-service
 }

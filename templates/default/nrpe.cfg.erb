@@ -79,3 +79,9 @@ command[check_solr]=<%= node['nagios']['plugin_dir'] %>/check_http -H localhost 
 # RabbitMQ
 command[check_rabbitmq]=<%= node['nagios']['plugin_dir'] %>/check_tcp -H localhost -p 5672
 <% end %>
+
+<% if node.recipe?('newrelic') %>
+command[check_newrelic]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1: -C nrsysmond
+<% else %>
+command[check_newrelic]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "New Relic server monitoring not installed"
+<% end %>
