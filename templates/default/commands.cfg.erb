@@ -336,12 +336,12 @@ define command {
 # Service Notification
 define command {
   command_name  service-notify-by-email
-  command_line    /usr/bin/printf "%b" "***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\nDate/Time: $LONGDATETIME$\nAdditional Info: $SERVICEOUTPUT$\nURL: https://<%= node['nagios']['web']['domain_name'] || node['fqdn'] %>/cgi-bin/nagios3/extinfo.cgi?type=2&host=$HOSTNAME$&service=$SERVICEDESC$\n\n$SERVICEACKCOMMENT$"" | mail -s "** $NOTIFICATIONTYPE$ Service Alert: $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTEMAIL$
+  command_line    /usr/bin/printf "%b" "***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\nDate/Time: $LONGDATETIME$\nAdditional Info: $SERVICEOUTPUT$\nURL: https://<%= node['nagios']['web']['domain_name'] || node['fqdn'] %>/cgi-bin/nagios3/extinfo.cgi?type=2&host=$HOSTNAME$&service=$SERVICEDESC$\n\n$SERVICEACKCOMMENT$" | mail -s "** $NOTIFICATIONTYPE$ Service Alert: $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTEMAIL$
 }
 
 define command {
   command_name  service-notify-by-sms-email
-  command_line    /usr/bin/printf "%b" "***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\nDate/Time: $LONGDATETIME$\nAdditional Info: $SERVICEOUTPUT$\nURL: https://<%= node['nagios']['web']['domain_name'] || node['fqdn'] %>/cgi-bin/nagios3/extinfo.cgi?type=2&host=$HOSTNAME$&service=$SERVICEDESC$\n\n$SERVICEACKCOMMENT$"" | mail -s "** $NOTIFICATIONTYPE$ Service Alert: $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTPAGER$
+  command_line    /usr/bin/printf "%b" "***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\nDate/Time: $LONGDATETIME$\nAdditional Info: $SERVICEOUTPUT$\nURL: https://<%= node['nagios']['web']['domain_name'] || node['fqdn'] %>/cgi-bin/nagios3/extinfo.cgi?type=2&host=$HOSTNAME$&service=$SERVICEDESC$\n\n$SERVICEACKCOMMENT$" | mail -s "** $NOTIFICATIONTYPE$ Service Alert: $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTPAGER$
 }
 
 #define command {
