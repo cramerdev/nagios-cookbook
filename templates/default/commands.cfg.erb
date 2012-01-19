@@ -158,6 +158,16 @@ define command {
 }
 
 define command {
+  command_name    check_http_host_url_expect
+  command_line    $USER1$/check_http -H $ARG1$ -u $ARG2$ -e $ARG3$
+}
+
+define command {
+  command_name    check_http_host_url_content
+  command_line    $USER1$/check_http -H $ARG1$ -u $ARG2$ -s $ARG3$
+}
+
+define command {
   command_name    check_https_host_url_content
   command_line    $USER1$/check_http -S -H $ARG1$ -u $ARG2$ -s $ARG3$
 }
