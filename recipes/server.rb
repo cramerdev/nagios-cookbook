@@ -171,6 +171,15 @@ service 'nagios' do
   action :start
 end
 
+# Ganglia packages
+if node.recipe?('ganglia')
+  easy_install_package 'distribute' do
+    version '0.6.14'
+  end
+
+  easy_install_package 'check_ganglia_metric'
+end
+
 # Add nagios to the supervisor group if supervisor is installed
 #if node.recipe?('supervisor')
   #group node['supervisor']['group'] do

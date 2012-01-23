@@ -163,16 +163,6 @@ define command {
 }
 
 define command {
-  command_name    check_http_host_url_expect
-  command_line    $USER1$/check_http -H $ARG1$ -u $ARG2$ -e $ARG3$
-}
-
-define command {
-  command_name    check_http_host_url_content
-  command_line    $USER1$/check_http -H $ARG1$ -u $ARG2$ -s $ARG3$
-}
-
-define command {
   command_name    check_http_host_url_content
   command_line    $USER1$/check_http -H $ARG1$ -u $ARG2$ -s $ARG3$
 }
@@ -382,4 +372,9 @@ define command {
 define command {
   command_name    check_supervisorctl
   command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_supervisorctl -t 20
+}
+
+define command {
+  command_name    check_ganglia_metric
+  command_line    check_ganglia_metric.py -a $HOSTNAME$ -m $ARG1$ -w $ARG2$ -c $ARG3$
 }

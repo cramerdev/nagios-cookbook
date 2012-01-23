@@ -65,7 +65,7 @@ command[check_gmond]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1:1 -C g
 command[check_gmond]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "gmond not installed"
 <% end %>
 
-<% if node.recipe?('ganglia::web2') %>
+<% if node.recipe?('ganglia::web') %>
 command[check_gmetad]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1:1 -C gmetad
 <% else %>
 command[check_gmetad]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "gmetad not installed"
