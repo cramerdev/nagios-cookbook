@@ -9,6 +9,7 @@ define service {
     check_command       check_ping!200.0,20%!500.0,60%
 }
 
+<% unless @service_hosts[node['nagios']['server_role'] || 'monitoring'].nil? -%>
 # monitoring service checks
 define service {
     service_description Nagios
@@ -17,6 +18,7 @@ define service {
     contact_groups      admins
     use                 default-service
 }
+<% end -%>
 
 # default checks for all hosts
 # Uncomment if you're running chef-client as a daemon
@@ -150,6 +152,7 @@ define service {
     use                 default-service
 }
 
+<% unless @service_hosts[node['nagios']['server_role'] || 'monitoring'].nil? -%>
 # Ganglia gmetad
 define service {
     service_description Ganglia Meta Daemon
@@ -158,6 +161,7 @@ define service {
     check_command       check_nrpe!check_gmetad
     use                 default-service
 }
+<% end -%>
 
 # New Relic
 define service {
