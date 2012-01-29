@@ -40,7 +40,7 @@ command[check_supervisorctl]=<%= node['nagios']['plugin_dir'] %>/check_dummy 0 "
 
 <% if node.recipe?('syslog-ng') %>
 # Syslog NG
-command[check_syslog-ng]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1:1 -C syslog-ng
+command[check_syslog-ng]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1: -C syslog-ng
 <% else %>
 command[check_syslog-ng]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "syslog-ng not installed"
 <% end %>
@@ -60,13 +60,13 @@ command[check_delayed_job]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 2:
 
 <% if node.recipe?('ganglia') %>
 # Ganglia
-command[check_gmond]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1:1 -C gmond
+command[check_gmond]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1: -C gmond
 <% else %>
 command[check_gmond]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "gmond not installed"
 <% end %>
 
 <% if node.recipe?('ganglia::web') %>
-command[check_gmetad]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1:1 -C gmetad
+command[check_gmetad]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1: -C gmetad
 <% else %>
 command[check_gmetad]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "gmetad not installed"
 <% end %>
