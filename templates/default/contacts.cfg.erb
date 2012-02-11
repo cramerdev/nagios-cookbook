@@ -13,16 +13,20 @@ define contact {
 define contactgroup {
   contactgroup_name admins
   alias             Nagios Administrators
-  members           <%= @members.join(',') %>
+<% unless @admins.empty? %>
+  members           <%= @admins.map(&:id).join(',') %>
+<% end %>
 }
 
 define contactgroup {
   contactgroup_name admins-sms
   alias             Sysadmin SMS
-  members           <%= @members.join(',') %>
+<% unless @admins.empty? %>
+  members           <%= @admins.map(&:id).join(',') %>
+<% end %>
 }
 
-<% @admins.each do |a| -%>
+<% @members.each do |a| -%>
 define contact {
   use          default-contact
   contact_name <%= a['id'] %>

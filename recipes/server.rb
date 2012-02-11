@@ -26,7 +26,13 @@ include_recipe "apache2::mod_ssl"
 include_recipe "apache2::mod_rewrite"
 include_recipe "nagios::client"
 
-sysadmins = search(:users, 'groups:admin')
+# Members have access to the system
+members = search(:users, 'groups:admin')
+# Admins get notified for everything
+admins = members.select do |m|
+  ((m['nagios'] || {})['contact_roles'] || []).include?('*')
+end
+
 node_search = node[:nagios][:node_search] || 'hostname:[* TO *]'
 nodes = search(:node, node_search)
 
@@ -36,9 +42,17 @@ if nodes.empty?
   nodes << node
 end
 
-members = Array.new
-sysadmins.each do |s|
-  members << s['id']
+# Make hash of nodes and contacts
+node_contacts = {}
+nodes.each do |n|
+  node_contacts[n.name] = []
+  n.roles.each do |r|
+    members.each do |m|
+      if ((m['nagios'] || {})['contact_roles'] || []).include?(r)
+        node_contacts[n.name] << m['id']
+      end
+    end
+  end
 end
 
 role_list = Array.new
@@ -117,7 +131,7 @@ else
     group node['apache']['user']
     mode 0640
     variables(
-      :sysadmins => sysadmins
+      :sysadmins => members
     )
   end
 end
@@ -156,7 +170,7 @@ nagios_conf "services" do
 end
 
 nagios_conf "contacts" do
-  variables :admins => sysadmins, :members => members
+  variables :members => members, :admins => admins
 end
 
 nagios_conf "hostgroups" do
@@ -164,7 +178,7 @@ nagios_conf "hostgroups" do
 end
 
 nagios_conf "hosts" do
-  variables :nodes => nodes
+  variables :nodes => nodes, :contacts => node_contacts
 end
 
 service 'nagios' do
@@ -179,11 +193,3 @@ if node.recipe?('ganglia')
 
   easy_install_package 'check_ganglia_metric'
 end
-
-# Add nagios to the supervisor group if supervisor is installed
-#if node.recipe?('supervisor')
-  #group node['supervisor']['group'] do
-    #members [node['nagios']['user']]
-    #append true
-  #end
-#end

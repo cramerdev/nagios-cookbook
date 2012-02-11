@@ -11,5 +11,8 @@ define host {
 <% else -%>
   hostgroups <%= (n.roles.to_a << n.chef_environment).join(",") %>
 <% end -%>
+<% unless @contacts[n.name].empty? %>
+  contacts <%= @contacts[n.name].join(',') %>
+<% end %>
 }
 <% end -%>
