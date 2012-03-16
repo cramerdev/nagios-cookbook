@@ -85,3 +85,6 @@ command[check_newrelic]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1: -C
 <% else %>
 command[check_newrelic]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "New Relic server monitoring not installed"
 <% end %>
+<% if node.recipes.include?('statsd') -%>
+command[check_statsd]=<%= node['nagios']['plugin_dir']%>/check_tcp -H localhost -p <%= node['statsd']['mgmt_port'] || 8126 %>
+<% end -%>

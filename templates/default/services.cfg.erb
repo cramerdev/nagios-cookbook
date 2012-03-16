@@ -171,6 +171,16 @@ define service {
     use                 default-service
 }
 
+<% unless @service_hosts['stats_server'].nil? -%>
+# StatsD
+define service {
+    service_description StatsD
+    hostgroup_name      stats_server
+    check_command       check_nrpe!check_statsd
+    use                 default-service
+}
+<% end -%>
+
 # Supervisor
 define service {
     service_description Supervisor
