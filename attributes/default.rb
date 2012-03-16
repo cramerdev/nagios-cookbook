@@ -28,8 +28,9 @@ default['nagios']['server']['ipaddresses'] = []
 
 # Set client IP
 #
-# Use the public ip for Rackspace Cloud Servers
-if node['cloud'] && node['cloud']['provider'] == 'rackspace'
+# Use the public ip for Rackspace Cloud Servers / EC2
+if node['cloud'] && (node['cloud']['provider'] == 'rackspace' ||
+                     node['cloud']['provider'] == 'ec2')
   default['nagios']['client']['ipaddress'] = node['cloud']['public_ipv4']
 # Use the private ip for other "cloud"-like providers
 elsif node['cloud'] && node['cloud']['local_ipv4']
