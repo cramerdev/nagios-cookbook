@@ -80,6 +80,16 @@ define service {
     use                 default-service
 }
 
+<% unless @service_hosts['graphite_server'].nil? -%>
+# Carbon (graphite)
+define service {
+    service_description Carbon
+    hostgroup_name      graphite_server
+    check_command       check_nrpe!check_carbon
+    use                 default-service
+}
+<% end -%>
+
 # basic web server http check
 <% unless @service_hosts['web'].nil? -%>
 define service {

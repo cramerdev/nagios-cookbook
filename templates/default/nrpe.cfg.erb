@@ -32,6 +32,10 @@ command[check_mysql_server]=<%= node['nagios']['plugin_dir'] %>/check_mysql -H l
 # Open file desciptors
 command[check_open_fds]=<%= node['nagios']['plugin_dir'] %>/check_open_fds.sh
 
+<% if node.recipes.include?('graphite') || node.recipes.include?('graphite::carbon') -%>
+# StatsD
+command[check_carbon]=<%= node['nagios']['plugin_dir']%>/check_tcp -H <%= node['graphite']['carbon']['line_receiver_interface'] %> -p <%= node['graphite']['carbon']['port'] || 2003 %>
+<% end -%>
 <% if node.recipe?('supervisor') %>
 command[check_supervisorctl]=<%= node['nagios']['plugin_dir'] %>/check_supervisorctl.sh
 <% else %>
@@ -86,5 +90,6 @@ command[check_newrelic]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1: -C
 command[check_newrelic]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "New Relic server monitoring not installed"
 <% end %>
 <% if node.recipes.include?('statsd') -%>
+# StatsD
 command[check_statsd]=<%= node['nagios']['plugin_dir']%>/check_tcp -H localhost -p <%= node['statsd']['mgmt_port'] || 8126 %>
 <% end -%>
