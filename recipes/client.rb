@@ -59,6 +59,6 @@ template "#{node['nagios']['nrpe']['conf_dir']}/nrpe.cfg" do
   group "root"
   mode "0644"
   variables :mon_host => mon_host,
-            :ip       => node['nagios']['client']['ipaddress']
+            :ip       => node['nagios']['client']['nrpe_bind_address']
   notifies :restart, "service[nagios-nrpe-server]"
 end

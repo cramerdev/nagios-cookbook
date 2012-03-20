@@ -26,16 +26,23 @@ set['nagios']['plugin_dir'] = "/usr/lib/nagios/plugins"
 # Set server ips
 default['nagios']['server']['ipaddresses'] = []
 
-# Set client IP
+# Set client and NRPE IPs
 #
 # Use the public ip for Rackspace Cloud Servers / EC2
 if node['cloud'] && (node['cloud']['provider'] == 'rackspace' ||
                      node['cloud']['provider'] == 'ec2')
   default['nagios']['client']['ipaddress'] = node['cloud']['public_ipv4']
+  if node['cloud']['provider'] == 'ec2'
+    default['nagios']['client']['nrpe_bind_address'] = node['cloud']['local_ipv4']
+  else
+    default['nagios']['client']['nrpe_bind_address'] = node['cloud']['public_ipv4']
+  end
 # Use the private ip for other "cloud"-like providers
 elsif node['cloud'] && node['cloud']['local_ipv4']
   default['nagios']['client']['ipaddress'] = node['cloud']['local_ipv4']
+  default['nagios']['client']['nrpe_bind_address'] = node['cloud']['public_ipv4']
 # Or the regular ip
 else
   default['nagios']['client']['ipaddress'] = node['ipaddress']
+  default['nagios']['client']['nrpe_bind_address'] = node['ipaddress']
 end

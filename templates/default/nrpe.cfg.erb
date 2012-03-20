@@ -91,5 +91,5 @@ command[check_newrelic]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "New Re
 <% end %>
 <% if node.recipes.include?('statsd') -%>
 # StatsD
-command[check_statsd]=<%= node['nagios']['plugin_dir']%>/check_tcp -H localhost -p <%= node['statsd']['mgmt_port'] || 8126 %>
+command[check_statsd]=<%= node['nagios']['plugin_dir'] %>/check_tcp -H <%= node['statsd']['mgmt_address'] %> -p <%= node['statsd']['mgmt_port'] || 8126 %>
 <% end -%>
