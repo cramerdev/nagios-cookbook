@@ -80,6 +80,16 @@ define service {
     use                 default-service
 }
 
+<% unless @service_hosts['gearman_server'].nil? -%>
+# Gearman
+define service {
+    service_description Gearman Daemon
+    hostgroup_name      gearman_server
+    check_command       check_nrpe!check_gearmand
+    use                 default-service
+}
+<% end %>
+
 <% unless @service_hosts['graphite_server'].nil? -%>
 # Carbon (graphite)
 define service {

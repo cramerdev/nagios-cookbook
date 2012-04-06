@@ -75,6 +75,11 @@ command[check_gmetad]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1: -C g
 command[check_gmetad]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "gmetad not installed"
 <% end %>
 
+<% if node.recipes.include?('gearman::server') -%>
+# Gearmand
+command[check_gearmand]=<%= node['nagios']['plugin_dir'] %>/check_tcp -H localhost -p <%= node['gearman']['server']['port'] || 4730 %>
+<% end -%>
+
 <% if node.recipes.include?("chef-server::rubygems-install") || node.recipes.include?("couchdb") %>
 # Couch DB
 command[check_couchdb]=<%= node['nagios']['plugin_dir'] %>/check_http -H localhost -p 5984 -s '"couchdb":"Welcome"'
@@ -93,3 +98,4 @@ command[check_newrelic]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "New Re
 # StatsD
 command[check_statsd]=<%= node['nagios']['plugin_dir'] %>/check_tcp -H <%= node['statsd']['mgmt_address'] %> -p <%= node['statsd']['mgmt_port'] || 8126 %>
 <% end -%>
+
