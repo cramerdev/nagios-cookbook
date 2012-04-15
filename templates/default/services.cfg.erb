@@ -191,6 +191,16 @@ define service {
     use                 default-service
 }
 
+<% unless @service_hosts['redis_server'].nil? -%>
+# Redis
+define service {
+    service_description Redis
+    hostgroup_name      redis_server
+    check_command       check_nrpe!check_redis
+    use                 default-service
+}
+<% end -%>
+
 <% unless @service_hosts['stats_server'].nil? -%>
 # StatsD
 define service {
