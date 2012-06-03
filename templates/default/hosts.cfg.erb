@@ -5,7 +5,7 @@
 define host {
   use server
   address <%= n['nagios']['client']['ipaddress'] %>
-  host_name <%= n[:fqdn] %>
+  host_name <%= n.name %>
 <% if (n.roles || []).empty? -%>
   hostgroups all
 <% else -%>
