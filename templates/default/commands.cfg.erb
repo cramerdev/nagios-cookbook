@@ -143,13 +143,28 @@ define command {
 }
 
 define command {
-  command_name    check_http_content
-  command_line    $USER1$/check_http -I $HOSTADDRESS$ -H $ARG1$ -u $ARG2$ -s $ARG3$
+  command_name    check_http_url
+  command_line    $USER1$/check_http -I $HOSTADDRESS$ -H $HOSTADDRESS -u $ARG1$
+}
+
+define command {
+  command_name    check_http_url_content
+  command_line    $USER1$/check_http -I $HOSTADDRESS$ -H $HOSTADDRESS -u $ARG1$ -s $ARG2$
+}
+
+define command {
+  command_name    check_https_url_content
+  command_line    $USER1$/check_http -S -I $HOSTADDRESS$ -H $HOSTADDRESS -u $ARG1$ -s $ARG2$
 }
 
 define command {
   command_name    check_http_port
   command_line    $USER1$/check_http -I $HOSTADDRESS$ -H $HOSTADDRESS$ -p $ARG1$
+}
+
+define command {
+  command_name    check_http_port_content
+  command_line    $USER1$/check_http -I $HOSTADDRESS$ -H $HOSTADDRESS$ -p $ARG1$ -s $ARG2$
 }
 
 define command {
