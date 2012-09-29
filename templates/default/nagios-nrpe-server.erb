@@ -32,20 +32,21 @@ fi
 NrpeBin=/usr/bin/nrpe
 NrpeCfg=<%= node['nagios']['nrpe']['conf_dir'] %>/nrpe.cfg
 LockFile=/var/lock/subsys/nrpe
+PidFile=/var/run/nagios/nrpe.pid
 
 # See how we were called.
 case "$1" in
   start)
   # Start daemons.
   echo -n "Starting nagios-nrpe-server: "
-  daemon $NrpeBin -c $NrpeCfg -d
+  daemon --pidfile $PidFile $NrpeBin -c $NrpeCfg -d
   echo
   touch $LockFile
   ;;
   stop)
   # Stop daemons.
   echo -n "Shutting down nagios-nrpe-server: "
-  killproc nagios-nrpe-server
+  killproc -p $PidFile nagios-nrpe-server
   echo
   rm -f $LockFile
   ;;

@@ -97,6 +97,11 @@ template "/etc/init.d/nagios-nrpe-server" do
   mode "0755"
 end
 
+directory '/var/run/nagios' do
+  owner node['nagios']['user']
+  mode '0755'
+end
+
 directory node['nagios']['nrpe']['conf_dir'] do
   owner "root"
   group "root"

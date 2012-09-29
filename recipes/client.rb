@@ -41,7 +41,7 @@ end
 include_recipe "nagios::client_#{node['nagios']['client']['install_method']}"
 
 service "nagios-nrpe-server" do
-  action :enable
+  action [:enable, :start]
   supports :restart => true, :reload => true
 end
 
