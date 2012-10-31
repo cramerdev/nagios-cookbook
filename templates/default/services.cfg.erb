@@ -129,6 +129,15 @@ define service {
     use                 default-service
 }
 
+<% unless @service_hosts['postgresql_server'].nil? -%>
+define service {
+    service_description PostgreSQL Server
+    hostgroup_name      postgresql_server
+    check_command       check_nrpe!check_postgres
+    use                 default-service
+}
+<% end -%>
+
 define service {
     service_description Solr
     hostgroup_name      chef_server

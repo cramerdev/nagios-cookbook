@@ -94,10 +94,16 @@ command[check_newrelic]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1: -C
 <% else %>
 command[check_newrelic]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "New Relic server monitoring not installed"
 <% end %>
+
+<% if node.recipes.include?('postgresql::server') -%>
+command[check_postgres]=<%= node['nagios']['plugin_dir'] %>/check_tcp -H localhost -p <%= node['postgresql']['port'] %>
+<% end -%>
+
 <% if node.recipes.include?('redis') -%>
 # Redis
 command[check_redis]=<%= node['nagios']['plugin_dir'] %>/check_tcp -H <%= node['redis']['bind'] || '127.0.0.1' %> -p <%= node['redis']['port'] || 6379 %>
 <% end -%>
+
 <% if node.recipes.include?('statsd') -%>
 # StatsD
 command[check_statsd]=<%= node['nagios']['plugin_dir'] %>/check_tcp -H <%= node['statsd']['mgmt_address'] %> -p <%= node['statsd']['mgmt_port'] || 8126 %>
