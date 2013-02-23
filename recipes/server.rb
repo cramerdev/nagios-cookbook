@@ -64,11 +64,13 @@ search(:role, '*:*') do |r|
   end
 end
 
+# These have to be uniq'd because there are instances where this search returns
+# duplicates
 environment_list = search(:environment, '*:*').each do |env|
   search(:node, "chef_environment:#{env.name}") do |n|
     service_hosts[env.name] = n['hostname']
   end
-end
+end.uniq(&:name)
 
 if node['public_domain']
   public_domain = node['public_domain']
