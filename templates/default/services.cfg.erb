@@ -20,15 +20,6 @@ define service {
 }
 <% end -%>
 
-# default checks for all hosts
-# Uncomment if you're running chef-client as a daemon
-#define service {
-#    service_description Chef Client
-#    hostgroup_name     base
-#    check_command      check_chef_client
-#    use                default-service
-#}
-
 define service {
     service_description Free Space All Disks
     hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
@@ -120,35 +111,11 @@ define service {
 
 <% end -%>
 
-# Chef Server
-<% unless @service_hosts['chef_server'].nil? -%>
-define service {
-    service_description CouchDB
-    hostgroup_name      chef_server
-    check_command       check_nrpe!check_couchdb
-    use                 default-service
-}
-
 <% unless @service_hosts['postgresql_server'].nil? -%>
 define service {
     service_description PostgreSQL Server
     hostgroup_name      postgresql_server
     check_command       check_nrpe!check_postgres
-    use                 default-service
-}
-<% end -%>
-
-define service {
-    service_description Solr
-    hostgroup_name      chef_server
-    check_command       check_nrpe!check_solr
-    use                 default-service
-}
-
-define service {
-    service_description RabbitMQ
-    hostgroup_name      chef_server
-    check_command       check_nrpe!check_rabbitmq
     use                 default-service
 }
 <% end -%>
