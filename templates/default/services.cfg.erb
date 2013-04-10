@@ -186,19 +186,3 @@ define service {
     use                 default-service
 }
 <% end -%>
-
-# Supervisor
-define service {
-    service_description Supervisor
-    hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
-    check_command       check_supervisorctl
-    use                 default-service
-}
-
-# Syslog NG
-define service {
-    service_description syslog-ng
-    hostgroup_name      <%= node['nagios']['nrpe_hostgroup'] %>
-    check_command       check_nrpe!check_syslog-ng
-    use                 default-service
-}

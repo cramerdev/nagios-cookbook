@@ -37,18 +37,6 @@ command[check_open_fds]=<%= node['nagios']['plugin_dir'] %>/check_open_fds.sh
 # StatsD
 command[check_carbon]=<%= node['nagios']['plugin_dir']%>/check_tcp -H <%= node['graphite']['carbon']['line_receiver_interface'] %> -p <%= node['graphite']['carbon']['port'] || 2003 %>
 <% end -%>
-<% if node.recipe?('supervisor') %>
-command[check_supervisorctl]=<%= node['nagios']['plugin_dir'] %>/check_supervisorctl.sh
-<% else %>
-command[check_supervisorctl]=<%= node['nagios']['plugin_dir'] %>/check_dummy 0 "supervisor not installed"
-<% end %>
-
-<% if node.recipe?('syslog-ng') %>
-# Syslog NG
-command[check_syslog-ng]=<%= node['nagios']['plugin_dir'] %>/check_procs -c 1: -C syslog-ng
-<% else %>
-command[check_syslog-ng]=<%= node['nagios']['plugin_dir']%>/check_dummy 0 "syslog-ng not installed"
-<% end %>
 
 <% if node.role?('nfs_server') %>
 command[check_nfs]=<%= node['nagios']['plugin_dir'] %>/check_nfs_health.sh
