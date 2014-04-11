@@ -29,18 +29,21 @@ default['nagios']['server']['ipaddresses'] = []
 # Set client and NRPE IPs
 #
 # If we have cloud attributes, decide using those
-if node['cloud'] && node['cloud']['public_ipv4']
+if node['cloud'] && Array(node['cloud']['public_ipv4']).any?
+  public_ipv4 = Array(node['cloud']['public_ipv4']).first
+  local_ipv4 = Array(node['cloud']['local_ipv4']).first
+
   # Use the public ip for the client address
-  default['nagios']['client']['ipaddress'] = node['cloud']['public_ipv4']
+  default['nagios']['client']['ipaddress'] = public_ipv4
 
   # A public ip that's the same as the node's IP, like stock rackspace cloud
   # servers
-  if node['cloud']['public_ipv4'] == node['ipaddress']
+  if public_ipv4 == node['ipaddress']
     default['nagios']['client']['nrpe_bind_address'] = node['ipaddress']
   # If the node IP address is the same as the cloud private address, bind to
   # that
-  elsif node['cloud']['local_ipv4'] == node['ipaddress']
-    default['nagios']['client']['nrpe_bind_address'] = node['cloud']['local_ipv4']
+  elsif local_ipv4 == node['ipaddress']
+    default['nagios']['client']['nrpe_bind_address'] = local_ipv4
   end
 
 # If we don't have a cloud attribute, just use the node ipaddress
